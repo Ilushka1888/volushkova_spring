@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заполнение результата</title>
+</head>
+<body>
+<h1>Spring MVC view layer: Thymeleaf</h1>
+<h2 th:text="'Заполняем результат за ' + ${serverTime}">
+    Заполняем результат за ...
+</h2>
+
+<form th:action="@{/today}" method="post">
+    <ul>
+        <li th:each="customer : ${customers}">
+            <label>
+                <input type="checkbox" th:name="${customer.id}">
+                <span th:text="${customer.name}">Customer</span>
+            </label>
+        </li>
+    </ul>
+
+    <button type="submit">Сохранить</button>
+</form>
+
+<p>
+    <a th:href="@{/}">На главную</a>
+</p>
+</body>
+</html>

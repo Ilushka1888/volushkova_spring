@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Motivation events</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 32px; line-height: 1.4; }
+        form, table, .summary { margin-top: 24px; }
+        label { display: block; margin-top: 12px; }
+        input, select, textarea, button { font: inherit; padding: 8px; min-width: 260px; }
+        textarea { min-height: 80px; }
+        button { min-width: auto; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f5f5f5; }
+        .message { padding: 8px 12px; background: #e8ffe8; border: 1px solid #9bd39b; }
+    </style>
+</head>
+<body>
+<h1>Motivation events</h1>
+<p>Дата: <span th:text="${serverTime}">2026-05-12</span></p>
+<p class="message" th:if="${message}" th:text="${message}">Событие сохранено</p>
+
+<section class="summary">
+    <h2>Баланс</h2>
+    <p>Всего баллов: <strong th:text="${totalPoints}">0</strong></p>
+    <ul>
+        <li th:each="entry : ${pointsByCustomer}">
+            <span th:text="${entry.key.name}">Ivanov</span>:
+            <strong th:text="${entry.value}">0</strong>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2>Добавить событие</h2>
+    <form th:action="@{/events}" method="post">
+        <label>
+            Пользователь
+            <select name="customerId" required>
+                <option th:each="customer : ${customers}"
+                        th:value="${customer.id}"
+                        th:text="${customer.name}">Ivanov</option>
+            </select>
+        </label>
+
+        <label>
+            Описание действия
+            <textarea name="description" required placeholder="Например: решил задачу"></textarea>
+        </label>
+
+        <label>
+            Баллы
+            <input name="points" type="number" required value="1">
+        </label>
+
+        <button type="submit">Сохранить</button>
+    </form>
+</section>
+
+<section>
+    <h2>События</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Время</th>
+            <th>Пользователь</th>
+            <th>Описание</th>
+            <th>Баллы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.id}">1</td>
+            <td th:text="${#temporals.format(event.createdAt, 'dd.MM.yyyy HH:mm')}">12.05.2026 12:00</td>
+            <td th:text="${event.customer.name}">Ivanov</td>
+            <td th:text="${event.description}">Описание</td>
+            <td th:text="${event.points}">1</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(events)}">
+            <td colspan="5">Пока нет событий</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

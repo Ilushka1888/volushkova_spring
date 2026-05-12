@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат</title>
+</head>
+<body>
+<h1 th:text="'Результат на ' + ${serverTime}">Результат</h1>
+
+<p>Вчера было</p>
+<h3 th:text="${yesterday}">0</h3>
+
+<p>Баланс на сегодня:</p>
+<h3 th:text="${now}">0</h3>
+
+<div th:if="${logList != null}">
+    <h4>Логи</h4>
+    <ul>
+        <li th:each="item : ${logList}">
+            <span th:text="${item.date}">2026-04-21</span>
+            —
+            <span th:text="${item.customer.name}">Ivanov</span>
+            —
+            <span th:text="${item.status}">DONE</span>
+        </li>
+    </ul>
+</div>
+
+<p>
+    <a th:href="@{/today}">Назад</a>
+</p>
+</body>
+</html>
